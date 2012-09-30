@@ -1,0 +1,85 @@
+[
+ ;; Document
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/uniqueName
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Unique identifier. Details are application-specific, but must be unique within the database."
+  :db/unique :db.unique/identity
+  :db/index true
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/dateCreated
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "date created"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/content
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "Reference to the content of the document. Usually this would be an entity with :ameba.structure and/or :ameba.content attributes"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/type
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Indicates the type of document."
+  :db.install/_attribute :db.part/db}
+ 
+  ;; author, owner, and authorName provide three means of attribution
+  ;; for a document. Many applications might only make use of 'owner'.
+  ;; 'author' would be useful for an application in which the
+  ;; user who created the document is not necessarily the same as the
+  ;; user who controls it. 'authorName' supports attributing
+  ;; authorship to someone who is not in the system. 
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/owner
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The user who 'owns', or has control of, the document"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/author
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The user designated as the document author. Normally same as owner"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/authorName
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Optional author name text. Can be useful if want to support attributing authorship to to non-users."
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/tag
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Tags. See the :ameba.tag attribute types"
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/visibility
+  :db/valueType :db.type/keyword
+  :db/cardinality :db.cardinality/one
+  :db/doc "Visibility, e.g. :published, :private, etc."
+  :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/isDraft
+  :db/valueType :db.type/boolean
+  :db/cardinality :db.cardinality/one
+  :db/doc "Flag indicating a draft copy"
+  :db.install/_attribute :db.part/db}
+
+
+]

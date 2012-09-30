@@ -1,0 +1,26 @@
+[
+
+ ;; Attributes for comments - i
+
+ {:db/id #db/id [:db.part/db]
+  :db/ident :ameba.comment/object
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The thing being commented on, e.g. a document"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id [:db.part/db]
+  :db/ident :ariba.comment/author
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The user who authored the comment"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id [:db.part/db]
+  :db/ident :comment/dateCreated
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "Time comment was created"
+  :db.install/_attribute :db.part/db}
+
+]

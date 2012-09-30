@@ -1,0 +1,21 @@
+[
+ ;; :ameba/structure attributes define hierarchical and positional
+ ;; relationships amongst entities.
+ 
+ {:db/id #db/id [:db.part/db]
+  :db/ident :ameba.structure/next
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "Next entity in order (linked-list ordering)"
+  :db.install/_attribute :db.part/db}
+ 
+ {:db/id #db/id [:db.part/db]
+  :db/ident :ameba.structure/child
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/isComponent true
+  :db/doc "hierarchical relationship"
+  :db.install/_attribute :db.part/db}
+
+
+]
