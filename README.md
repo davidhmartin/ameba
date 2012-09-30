@@ -1,6 +1,6 @@
 # ameba
 
-FIXME: write description
+Ameba is a toolkit for creating document-centric social web sites using Clojure and Datomic.
 
 ## Usage
 
