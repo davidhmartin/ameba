@@ -1,16 +1,17 @@
 (ns ameba.schema
     (:use [datomic.api :only [db q] :as d]
-        [ameba.datomic :only [conn]]))
+          [ameba.datomic :only [conn]]
+          [clojure.java.io :only [resource]]))
 
-(def document-dtm "resources/schemas/document.dtm")
-(def structure-dtm "resources/schemas/structure.dtm")
-(def content-dtm "resources/schemas/content.dtm")
-(def comments-dtm "resources/schemas/comments.dtm")
-(def notes-dtm "resources/schemas/notes.dtm")
-(def user-dtm "resources/schemas/user.dtm")
-(def tags-dtm "resources/schemas/tags.dtm")
+(def document-dtm "schemas/document.dtm")
+(def structure-dtm "schemas/structure.dtm")
+(def content-dtm "schemas/content.dtm")
+(def comments-dtm "schemas/comments.dtm")
+(def notes-dtm "schemas/notes.dtm")
+(def user-dtm "schemas/user.dtm")
+(def tags-dtm "schemas/tags.dtm")
 
-(defn load-schema [& files] (vec (flatten (map #(read-string (slurp %)) files))))
+(defn load-schema [& files] (vec (flatten (map #(read-string (slurp (resource %))) files))))
 
 (defn init-schema
   "Initializes the datomic database with the schema definitions in the given sequence of files.

@@ -3,9 +3,9 @@
 
 {:db/id #db/id [:db.part/db]
   :db/ident :ameba.content/type
-  :db/valueType :db.type/keyword
+  :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
-  :db/doc "Type hint(s) for querying and rendering"
+  :db/doc "Enum type hint(s) for querying and rendering. "
   :db.install/_attribute :db.part/db}
  
  
@@ -26,7 +26,9 @@
   :db/fulltext true
   :db.install/_attribute :db.part/db}
 
- 
+
+;; todo maybe we don't need this. Why have an extra entity to hold
+;; the image attributes?
  {:db/id #db/id [:db.part/db]
   :db/ident :ameba.content/image
   :db/valueType :db.type/ref
@@ -63,7 +65,7 @@
   :db.install/_attribute :db.part/db}
 
 
-
+;; todo ditto - maybe we don't need this containing entity
  {:db/id #db/id [:db.part/db]
   :db/ident :ameba.content/link
   :db/valueType :db.type/ref

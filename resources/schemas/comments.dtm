@@ -1,6 +1,12 @@
 [
 
- ;; Attributes for comments - i
+ ;; Attributes supporting comments: a reference to the thing being
+ ;; commented on and the comment author. Note that other essential
+ ;; attributes, such as the actual comment text and (for applications
+ ;; supporting nested comments) children, are defined in other
+ ;; attribute namespaces. For example, a comment entity will probably
+ ;; include at least a :content/text attribute and an :ameba/date-created
+ ;; attribute.
 
  {:db/id #db/id [:db.part/db]
   :db/ident :ameba.comment/object
@@ -8,7 +14,8 @@
   :db/cardinality :db.cardinality/one
   :db/doc "The thing being commented on, e.g. a document"
   :db.install/_attribute :db.part/db}
- 
+
+ ;; todo do we need this? Should we move author to :ameba namespace?
  {:db/id #db/id [:db.part/db]
   :db/ident :ariba.comment/author
   :db/valueType :db.type/ref
@@ -16,11 +23,4 @@
   :db/doc "The user who authored the comment"
   :db.install/_attribute :db.part/db}
  
- {:db/id #db/id [:db.part/db]
-  :db/ident :comment/dateCreated
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "Time comment was created"
-  :db.install/_attribute :db.part/db}
-
 ]

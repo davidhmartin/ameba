@@ -1,4 +1,7 @@
 [
+;; A 'note' entity is like an annotation. It refers to something, such
+ ;; as a document, part of a document, a user, etc. 
+ 
   {:db/id #db/id [:db.part/db]
   :db/ident :ameba.note/object
   :db/valueType :db.type/ref
@@ -14,24 +17,10 @@
   :db.install/_attribute :db.part/db}
  
   {:db/id #db/id [:db.part/db]
-  :db/ident :ameba.note/owner
+  :db/ident :ameba.note/visibility
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "User who created and controls the note"
-  :db.install/_attribute :db.part/db}
- 
-  {:db/id #db/id [:db.part/db]
-  :db/ident :ameba.note/dateCreated
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "timestamp"
-  :db.install/_attribute :db.part/db}
- 
-  {:db/id #db/id [:db.part/db]
-  :db/ident :ameba.note/visibility
-  :db/valueType :db.type/keyword
-  :db/cardinality :db.cardinality/one
-  :db/doc "e.g. :public, :private, etc."
+  :db/doc "An enum indicating visibility of the note, such as 'public' or 'private'"
   :db.install/_attribute :db.part/db}
  
 

@@ -14,25 +14,53 @@
  :db/ident :ameba.user/password
  :db/valueType :db.type/string
  :db/cardinality :db.cardinality/one
+ :db/doc "Encrypted password"
  :db.install/_attribute :db.part/db}
 
 {:db/id #db/id[:db.part/db]
- :db/ident :ameba.user/email
+ :db/ident :ameba.user/email-id
  :db/unique :db.unique/identity
  :db/valueType :db.type/string
  :db/cardinality :db.cardinality/one
+ :db/doc "Email address used as login ID."
  :db.install/_attribute :db.part/db}
 
 {:db/id #db/id[:db.part/db]
- :db/ident :ameba.user/isAdmin
- :db/valueType :db.type/boolean
- :db/cardinality :db.cardinality/one
+ :db/ident :ameba.user/roles
+ :db/valueType :db.type/ref
+ :db/cardinality :db.cardinality/many
+ :db/doc "Enum - security roles, such as admin, user, etc."
  :db.install/_attribute :db.part/db}
 
 {:db/id #db/id[:db.part/db]
- :db/ident :ameba.user/fullName
+ :db/ident :ameba.user/full-name
  :db/valueType :db.type/string
  :db/cardinality :db.cardinality/one
  :db.install/_attribute :db.part/db}
+
+{:db/id #db/id[:db.part/db]
+ :db/ident :ameba.user/first-name
+ :db/valueType :db.type/string
+ :db/cardinality :db.cardinality/one
+ :db.install/_attribute :db.part/db}
+
+{:db/id #db/id[:db.part/db]
+ :db/ident :ameba.user/last-name
+ :db/valueType :db.type/string
+ :db/cardinality :db.cardinality/one
+ :db.install/_attribute :db.part/db}
+
+{:db/id #db/id[:db.part/db]
+ :db/ident :ameba.user/middle-name
+ :db/valueType :db.type/string
+ :db/cardinality :db.cardinality/one
+ :db.install/_attribute :db.part/db}
+
+{:db/id #db/id[:db.part/db]
+ :db/ident :ameba.user/salutation
+ :db/valueType :db.type/ref
+ :db/cardinality :db.cardinality/one
+ :db.install/_attribute :db.part/db}
+
 
 ]

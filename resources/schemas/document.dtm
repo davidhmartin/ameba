@@ -2,19 +2,12 @@
  ;; Document
  
  {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/uniqueName
+  :db/ident :ameba.document/unique-name
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Unique identifier. Details are application-specific, but must be unique within the database."
   :db/unique :db.unique/identity
   :db/index true
-  :db.install/_attribute :db.part/db}
- 
- {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/dateCreated
-  :db/valueType :db.type/instant
-  :db/cardinality :db.cardinality/one
-  :db/doc "date created"
   :db.install/_attribute :db.part/db}
  
  {:db/id #db/id[:db.part/db]
@@ -27,9 +20,9 @@
 
  {:db/id #db/id[:db.part/db]
   :db/ident :ameba.document/type
-  :db/valueType :db.type/keyword
+  :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Indicates the type of document."
+  :db/doc "Enum indicating the type of document."
   :db.install/_attribute :db.part/db}
  
   ;; author, owner, and authorName provide three means of attribution
@@ -40,21 +33,7 @@
   ;; authorship to someone who is not in the system. 
  
  {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/owner
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "The user who 'owns', or has control of, the document"
-  :db.install/_attribute :db.part/db}
- 
- {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/author
-  :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
-  :db/doc "The user designated as the document author. Normally same as owner"
-  :db.install/_attribute :db.part/db}
- 
- {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/authorName
+  :db/ident :ameba.document/author-name
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Optional author name text. Can be useful if want to support attributing authorship to to non-users."
@@ -69,17 +48,24 @@
 
  {:db/id #db/id[:db.part/db]
   :db/ident :ameba.document/visibility
-  :db/valueType :db.type/keyword
+  :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
-  :db/doc "Visibility, e.g. :published, :private, etc."
+  :db/doc "An enum type, indicating document visibility, e.g. published, private, etc."
   :db.install/_attribute :db.part/db}
+
 
  {:db/id #db/id[:db.part/db]
-  :db/ident :ameba.document/isDraft
+  :db/ident :ameba.document/is-draft
   :db/valueType :db.type/boolean
   :db/cardinality :db.cardinality/one
-  :db/doc "Flag indicating a draft copy"
+  :db/doc "Flag indicating the document is in 'draft' state"
   :db.install/_attribute :db.part/db}
 
+ {:db/id #db/id [:db.part/db]
+  :db/ident :ameba.document/parent
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "References another document entity, from which this document was derived."
+  :db.install/_attribute :db.part/db}
 
 ]
