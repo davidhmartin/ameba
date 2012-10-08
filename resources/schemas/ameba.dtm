@@ -1,0 +1,25 @@
+[
+ ;; Common attribute types shared amongst different types of entity.
+
+  {:db/id #db/id[:db.part/db]
+  :db/ident :ameba/date-created
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "A timestamp for creation of an entity."
+  :db.install/_attribute :db.part/db}
+ 
+  {:db/id #db/id[:db.part/db]
+  :db/ident :ameba/date-changed
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc "A timestamp recording time of a significant change to an entity."
+  :db.install/_attribute :db.part/db}
+
+  {:db/id #db/id [:db.part/db]
+   :db/ident :ameba/owner
+   :db/valueType :db.type/ref
+   :db/cardinality :db.cardinality/one
+   :db/doc "User who controls (created?) an entity, such as a document, a comment, or a note"
+   :db.install/_attribute :db.part/db}
+ 
+ ]
