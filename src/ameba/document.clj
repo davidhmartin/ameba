@@ -1,49 +1,50 @@
-(ns ameba.models.document
+(ns ameba.document
   "data (model-layer) functions for :ameba.document entities"
-  (:use [ameba.datomic :only [conn resolve-id resolve-ids query-for-entities]]
-        [datomic.api :only [db q] :as d]))
+  (:use [ameba.datomic :only [entity query-for-entities]]
+        [datomic.api :only [q] :as d]))
 
 (defn all-documents
   "Returns sequence of all documents in the database"
-  []
-  (query-for-entities
-   {:find [?d]
-    :where [?d :ameba.document/uniqueName]}
+  [db]
+  (query-for-entities db
+                      '[:find ?d
+                        :where [?d :ameba.document/type]]
    )
-  (map #(d/entity (db conn) %)
-       (flatten (seq (q '[:find ?d :where [?d :ameba.document/uniqueName]] (db conn))))))
+  ;; (map #(d/entity db %)
+  ;;      (flatten (seq (q '[:find ?d :where [?d :ameba.document/uniqueName]] db)))))
+  )
 
 (defn documents-of-type
   "Returns sequence of all documents with the specified type"
-  [type-keyword]
-  (map #(d/entity (db conn) %)
-       (flatten (seq (q '[:find ?d :in $ ?type :where [?d :ameba.document/type ?type]] (db conn) type/keyword)))))
+  [db type]
+  (map #(d/entity db %)
+       (flatten (seq (q '[:find ?d :in $ ?type :where [?d :ameba.document/type ?type]] db type)))))
 
-(defn query-documents-with-tag [tag-name]
+(defn query-documents-with-tag [db tag-name]
              (q
             '[:find ?d
             :in $ ?name
             :where
-              [?d :document/tag ?t]
-              [?t :tag/name ?name]]
-            (db conn)
+              [?d :ameba.document/tag ?t]
+              [?t :ameba.tag/name ?name]]
+            db
             tag-name))
 
 (defn documents-with-tag
   "Returns seq of documents with given tag"
-  [tag-name]
-  (map #(d/entity (db conn) %)
+  [db tag-name]
+  (map #(d/entity db %)
   (flatten (seq
-            (query-documents-with-tag tag-name) )))
+            (query-documents-with-tag db tag-name) )))
   )
 
-(defn document-with-id [id]
-  (resolve-id (ffirst (q '[:find ?d :in $ ?id :where [?d :document/uniqueName ?id]] (db conn) id))))
+(defn document-with-id [db id]
+  (entity (ffirst (q '[:find ?d :in $ ?id :where [?d :document/unique-name ?id]] db id))))
 
 (defn document-tag-names
   "Returns list of displayable tag names for a document"
   [document]
-  (map :tag/label (:document/tag document)))
+  (map :ameba.tag/label (:ameba.document/tag document)))
 
 
 (defn document-contents-by-type
