@@ -1,6 +1,5 @@
 (ns ameba.schema
     (:use [datomic.api :only [db q] :as d]
-          [ameba.datomic :only [*connection*]]
           [clojure.java.io :only [resource]]))
 
 (def ameba-dtm "schemas/ameba.dtm")

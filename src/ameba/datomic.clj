@@ -2,32 +2,46 @@
   (:use [datomic.api :only [db q] :as d]
         [clojure.walk :as walk ]))
 
-;; The URI to datomic comes from environment variable
-;; AMEBA_DATOMIC_URI, defaulting to an in-memory database if not specified.
 
-(def default-datomic-uri "datomic:free://localhost:4334/ameba")
+;; lifted from
+;; https://github.com/Datomic/day-of-datomic/blob/master/src/datomic/samples/query.clj
 
-;(def default-datomic-uri "datomic:mem://ameba")
+(defprotocol Eid
+  (e [_])
+  (entity-id [_])
+  (entity [db _]))
 
-;;;;(d/create-database default-datomic-uri)
+(extend-protocol Eid
+  java.lang.Long
+  (e [n] n)
+  (entity-id [n] n)
+  (entity [db n] (d/entity db n))
 
-(def ^:dynamic datomic-uri (get (System/getenv) "AMEBA_DATOMIC_URI" default-datomic-uri))
+  datomic.Entity
+  (e [ent] (:db/id ent))
+  (entity-id [ent] (:db/id ent))
+  (entity [db ent] ent)
 
-;;;;;(def conn (d/connect datomic-uri))
-
-
+  nil
+  (e [_] nil)
+  (entity-id [_] nil)
+  (entity [db ent] nil))
 
 ;; lifted from https://gist.github.com/3150938
 
-(def ^{:dynamic true :doc "A Datomic connection bound for the life of a Ring request."} *connection*)
 
-(defn init-connection []
-  (def ^:dynamic *connection* (d/connect datomic-uri)))
 
-(defn transact
-  "Run a transaction with a request-consistent connection."
-  [tx]
-  (d/transact *connection* tx))
+
+
+;; (def ^{:dynamic true :doc "A Datomic connection bound for the life of a Ring request."} *connection*)
+
+;; (defn init-connection []
+;;   (def ^:dynamic *connection* (d/connect datomic-uri)))
+
+;; (defn transact
+;;   "Run a transaction with a request-consistent connection."
+;;   [tx]
+;;   (d/transact *connection* tx))
 
 ;; (defn q
 ;;   "Runs the given query over a request-consistent database as well as
@@ -35,13 +49,13 @@
 ;;   [query & sources]
 ;;   (apply d/q query (d/db *connection* sources))
 
-(defn wrap-datomic
-  "A Ring middleware that provides a request-consistent database connection and
-  value for the life of a request."
-  [handler uri]
-  (fn [request]
-    (binding [*connection* (d/connect uri)]
-      (handler request))))
+;; (defn wrap-datomic
+;;   "A Ring middleware that provides a request-consistent database connection and
+;;   value for the life of a request."
+;;   [handler uri]
+;;   (fn [request]
+;;     (binding [*connection* (d/connect uri)]
+;;       (handler request))))
 
 
 (defn- entity?
@@ -101,17 +115,24 @@
 
 
 
-(defn entity
+(defn id-to-entity
   "Returns the entity if passed an id that is not false-y."
   [db id]
   (when id
     (d/entity db id)))
 
+(defn resolve-id
+  "Returns the entity if passed an id that is not false-y."
+  [db id]
+  (when id
+    (d/entity db id)))
+
+
 (defn entities
   "Returns a set of entities from a [:find ?e ...] query."
   [db query-results]
   (into #{}
-        (map (comp (partial entity db) first)
+        (map (comp (partial id-to-entity db) first)
              query-results)))
 
 (defn find-all
@@ -132,22 +153,6 @@
 
 (defn query-for-entities
   [db query & params]
-  (entities db (q query db params)))
+  (entities db (apply q query db params)))
 
 
-
-;; todo don't need this
-
-;; unique id generator. Appends a 16-bit sequence number to a 48-bit
-;; timestamp. Should provide sufficiently safe uniqueness. Might revisit.
-(def counter (ref 0))
-(defn- next-counter [] (dosync (alter counter #(bit-and (inc %) 0xffff))))
-(defn next-uid []
-  (bit-or (bit-shift-left (System/currentTimeMillis) 16) (next-counter))) 
-
-
-(defn generate-unique-string
-  [text is-unique-fn str-generator]
-  (if (is-unique-fn text)
-    text
-    (recur (str text (str-generator)) is-unique-fn str-generator)))

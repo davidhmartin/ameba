@@ -4,7 +4,7 @@
 {:db/id #db/id [:db.part/db]
   :db/ident :ameba.content/type
   :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/many
+  :db/cardinality :db.cardinality/one
   :db/doc "Enum type hint(s) for querying and rendering. "
   :db.install/_attribute :db.part/db}
  

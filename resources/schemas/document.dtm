@@ -9,6 +9,12 @@
   :db/unique :db.unique/identity
   :db/index true
   :db.install/_attribute :db.part/db}
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :ameba.document/title
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db.doc "Document tit"}
  
  {:db/id #db/id[:db.part/db]
   :db/ident :ameba.document/content
