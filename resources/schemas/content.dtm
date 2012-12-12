@@ -14,7 +14,6 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "A title, for example, a document title or the title of a section. Fulltext index enabled."
-  :db/fulltext true
   :db.install/_attribute :db.part/db}
  
 
@@ -23,7 +22,6 @@
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "Basic textual content. Fulltext index enabled."
-  :db/fulltext true
   :db.install/_attribute :db.part/db}
 
 
@@ -94,6 +92,13 @@
   :db/doc "Alternative to a url link, this is used for a link that directly references a datomic entity."
   :db.install/_attribute :db.part/db}
 
+
+{:db/id #db/id [:db.part/db]
+ :db/ident :ameba.content/clob
+ :db/valueType :db.type/uri
+ :db/cardinality :db.cardinality/one
+ :db/doc "Text stored in an external data source, such as S3. The value is a uri to the data."
+ :db.install/_attribute :db.part/db}
 
 
 ]

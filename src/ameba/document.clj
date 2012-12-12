@@ -96,37 +96,4 @@
          [(fulltext $ ~text-attr ?term) [[?document]]]]]))
 
 
-(def fulltext-query
-  '[:find ?r
-    :in $ % ?term
-    :where
-    (find-document ?r :maureenslist.document.type/recipe ?term)])
-
-(def default-fulltext-search-rules
-    (concat
-          (doc-attr-search-rule :maureenslist.document.type/recipe :ameba.content/title)
-          (doc-content-search-rule :maureenslist.document.type/recipe :ameba.content/text)
-          (doc-content-search-rule :maureenslist.document.type/recipe :ameba.content/title)))
-
-
-(defn fulltext-search
-  ([rules db term index limit]
-      (map #(entity db (first %))
-           (->>     
-            (q fulltext-query db (concat ameba.structure/rules rules) term)
-            (drop index)
-            (take limit))))
-  ([db str] (search-all-recipe db str 0 1000)))
-
-(defn fulltext-search
-  ([attrs db term index limit]
-      (map #(entity db (first %))
-           (->>     
-            (q fulltext-query db (concat ameba.structure/rules rules) term)
-            (drop index)
-            (take limit))))
-  ([attrs db term] (search-all-recipe db term 0 1000)))
-
-
-
 

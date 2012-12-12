@@ -5,19 +5,21 @@
 
 (defn get-all-tag-types [db]
   (map #(d/entity db %)
-       (flatten (seq (q '[:find ?t ?n :where [?t :ameba.tag/name ?n]] db)))))
+       (flatten (seq (q '[:find ?t :where [?t :ameba.tag/name]] db)))))
 
 (defn get-tags
   "Gets tags with given type"
   [db type]
-  (map #(d/entity db %)
-       (flatten (seq
-                 (q '[:find ?t
-                      :in $ ?type
-                      :where
-                      [?t :ameba.tag/category ?type]]
-                    db
-                    type)))))
+  '(type)
+  ;; (map #(d/entity db %)
+  ;;      (flatten (seq
+  ;;                (q '[:find ?t
+  ;;                     :in $ ?type
+  ;;                     :where
+  ;;                     [?t :ameba.tag/category ?type]]
+  ;;                   db
+  ;;                   type))))
+  )
 
 (defn get-tag-names
   [db type]
