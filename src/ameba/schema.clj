@@ -2,14 +2,14 @@
     (:use [datomic.api :only [db q] :as d]
           [clojure.java.io :only [resource]]))
 
-(def ameba-dtm "schemas/ameba.dtm")
-(def document-dtm "schemas/document.dtm")
-(def structure-dtm "schemas/structure.dtm")
-(def content-dtm "schemas/content.dtm")
-(def comments-dtm "schemas/comments.dtm")
-(def notes-dtm "schemas/notes.dtm")
-(def user-dtm "schemas/user.dtm")
-(def tags-dtm "schemas/tags.dtm")
+(def ameba-dtm "schemas/ameba.edn")
+(def document-dtm "schemas/document.edn")
+(def structure-dtm "schemas/structure.edn")
+(def content-dtm "schemas/content.edn")
+(def comments-dtm "schemas/comments.edn")
+(def notes-dtm "schemas/notes.edn")
+(def user-dtm "schemas/user.edn")
+(def tags-dtm "schemas/tags.edn")
 
 (def all-default-dtms [ameba-dtm document-dtm structure-dtm content-dtm comments-dtm notes-dtm user-dtm tags-dtm])
 

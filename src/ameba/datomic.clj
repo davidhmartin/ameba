@@ -148,11 +148,62 @@
 
 
 
-
-
-
 (defn query-for-entities
   [db query & params]
   (entities db (apply q query db params)))
 
+
+
+
+(defn head
+  "Given a key and a collection of entities comprising the elements of a 'list' linked via the
+   key attribute, this function evaluates to the head of that list.
+   It evaluates to nil if the collection is empty or nil. If the collection does not
+   comprise the elements of a single list linked via 'next-key', the result is
+   undefined."
+  [next-key entities]
+  (first (reduce  #(disj % (get %2 next-key)) (set entities) entities)))
+
+(defn head-fn
+  ""
+  [next-key]
+  (partial head next-key))
+
+(defn first-child
+  "Given an entity with linked-list children, returns the head of that list"
+  [next-key child-key ent]
+  (head next-key (get ent child-key)))
+
+(defn first-child-fn
+  ([next-key]
+     (partial first-child next-key))
+  ([next-key child-key]
+      (partial first-child next-key child-key)))
+
+(defn first-child-query
+  [next-key child-key db ent]
+  (first (difference
+          (query-for-entities db '[:find ?child :in $ ?parent ?children-attr
+                                   :where
+                                   [?parent ?children-attr ?child]] (e ent) child-key)
+          (query-for-entities db '[:find ?child :in $ ?parent ?children-attr
+                                   :where
+                                   [?parent ?children-attr ?child]
+                                   [_ ?next-attr ?child]] (e ent) child-key))))
+
+(defn first-child-query-fn
+  [next-key child-key]
+  (partial first-child-query next-key child-key))
+
+(defn as-seq
+  [next-key elem]
+  (lazy-seq
+   (cons elem
+         (if (nil? (get elem next-key))
+           nil
+           (as-seq next-key (get elem next-key))))))
+  
+(defn as-seq-fn
+    [next-key]
+    (partial as-seq next-key))
 

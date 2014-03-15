@@ -78,22 +78,4 @@
 
 
 
-(defmacro content-text-search-rule
-  "Macro defining a recursive rule to execute a fulltext search for documents of the specified type,
-   searching the text in content attributes of the specified content type"
-  ([doctype text-attr]
-     `'[[(find-document ?document ?term)
-         [?document :ameba.document/type ~doctype]
-         [(fulltext $ ~text-attr ?term) [[?content]]]
-         [ancestor ?content ?document]]]))
-
-(defmacro attr-text-search-rule
-  "Macro defining a rule for fulltext search on a document of the specified type, searching the specified attribute.
-   In this rule, the search is limited to a direct attribute of the document entity."
-  ([doctype text-attr]
-     `'[[(find-document ?document ?term)
-         [?document :ameba.document/type ~doctype]
-         [(fulltext $ ~text-attr ?term) [[?document]]]]]))
-
-
 

@@ -2,6 +2,8 @@
 
 Ameba is a toolkit for creating document-centric social web sites using Clojure and Datomic.
 
+Disclaimer: This is a work in progress, subject to complete change at any time. 
+
 ## Usage
 
 FIXME: write

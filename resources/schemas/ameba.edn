@@ -21,5 +21,11 @@
    :db/cardinality :db.cardinality/one
    :db/doc "User who controls (created?) an entity, such as a document, a comment, or a note"
    :db.install/_attribute :db.part/db}
- 
+
+  {:db/id #db/id [:db.part/db]
+   :db/ident :ameba/checksum
+   :db/valueType :db.type/string
+   :db/cardinality :db.cardinality/one
+   :db/doc "A checksum. Asserted on an entity for content verification"
+   :db.install/_attribute :db.part/db}
  ]
